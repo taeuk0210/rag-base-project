@@ -1,0 +1,34 @@
++---api
+|   |   
+|   +---embed
+|   |   \---v1
+|   |       |   main.py
+|   |       \---endpoints
+|   |               docs.py
+|   +---v1
+|   |   |   main.py
+|   |   |   
+|   |   +---endpoints
+|   |   |   |   docs.py
+|   |   |   |   users.py
++---core
+|   |   config.py
+|   |   database.py
+|   |   security.py
++---deps
+|   |   users.py
++---models
+|   |   user.py
++---notebooks
++---repositories
+|   +---cache
+|   +---rdb
+|   |   |   users.py
+|   +---s3
+|   \---vdb
++---schemas
+|   |   docs.py
+|   |   users.py
++---services
+|   |   users.py
+\---tests

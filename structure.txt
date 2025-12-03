@@ -1,0 +1,90 @@
+rag-project/
+  docker-compose.yml
+  .env
+  pyproject.toml
+
+  api/
+    main_api/
+      main.py
+      routers/
+        rag_endpoints.py         # /rag/query
+        doc_endpoints.py         # /docs/upload, /docs/list...
+        auth_endpoints.py        # 로그인/토큰 갱신
+
+    embedding_api/
+      main.py
+      routers/
+        embed.py                 # /embed
+
+  common/
+    config.py                    # 환경 변수
+    logging.py
+    exceptions.py
+    schemas/                     # Pydantic DTOs
+      rag.py
+      doc.py
+      auth.py
+
+    utils/
+      timer.py                   # AOP-style logging decorator
+      jwt.py                     # JWT encode/decode
+      file.py                    # 파일 관련 공통 로직
+
+  domain/
+    models/                      # 비즈니스 엔티티(도메인)
+      document.py
+      chunk.py
+      user.py
+
+  repositories/
+    rdb/
+      db.py
+      session.py
+      models.py
+      doc_repository.py
+      user_repository.py
+
+    vdb/                         # VECTOR DB 교체 가능
+      base.py                    # 인터페이스 (Strategy)
+      pgvector_repository.py
+      qdrant_repository.py
+      milvus_repository.py
+
+    storage/
+      base.py                    # 인터페이스
+      s3_repository.py
+      minio_repository.py
+
+  services/
+    __init__.py
+
+    doc_ingestion/               # 문서 인입 파이프라인
+      pipeline.py                # 전체 ingestion orchestrator
+      chunker.py                 # 청킹 전략
+      preprocessor.py            # PDF → text 처리
+      metadata_builder.py        # RDB 메타 구성
+
+    rag/
+      pipeline.py                # RAG 전체 orchestrator
+      retriever.py               # VDB 검색
+      prompt_builder.py          # 프롬프트 조립
+
+    embedding/
+      base.py                    # Embedding Strategy
+      local_embedding.py         # sentence-transformers
+      api_embedding.py           # embedding_api 호출
+      vllm_embedding.py          # vLLM embedding endpoint
+
+    llm/
+      base.py                    # LLM Strategy
+      openai_llm.py
+      vllm_llm.py
+      anthropic_llm.py
+
+    app/                         # 일반 도메인 서비스
+      user_service.py
+      doc_service.py
+      auth_service.py
+
+  notebooks/
+    ...
