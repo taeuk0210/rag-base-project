@@ -1,0 +1,59 @@
+version: "3.9"
+services:
+  main-api:
+    build: 
+      context: .
+      dockerfile: ./Dockerfile.main
+    container_name: main-api-server
+    networks:
+      - rag-network
+    ports:
+      - "8800:8800"
+      
+  embed-api:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.embed
+    container_name: embed-api-server
+    networks:
+      - rag-network
+    ports:
+      - "8801:8801"
+
+  vllm-api:
+    image: vllm/vllm-openai:latest
+    container_name: vllm-api-server
+    networks:
+      - rag-network
+    ports:
+      - "8802:8802"
+    command:
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8802"
+      - --model
+      - "lmstudio-community/LFM2-1.2B-MLX-8bit"
+    # runtime: nvidia
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+  postgres-db:
+    image: postgres:latest
+    container_name: postgres-db-server
+    networks:
+      - rag-network
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: taeuk0623
+      POSTGRES_DB: postgres
+
+networks:
+  rag-network:
