@@ -49,5 +49,14 @@ services:
       POSTGRES_PASSWORD: taeuk0623
       POSTGRES_DB: postgres
 
+  qdrant-db:
+    image: qdrant/qdrant:latest
+    container_name: qdrant-db
+    networks:
+      - rag-base-network
+    ports:
+      - "6333:6333"
+
+
 networks:
   rag-base-network:
