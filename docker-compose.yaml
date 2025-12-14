@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   rag-api:
-    build: 
+    build:
       context: .
       dockerfile: ./docker/Dockerfile.rag
     container_name: rag-api
@@ -9,7 +9,7 @@ services:
       - rag-base-network
     ports:
       - "8800:8800"
-      
+
   embed-api:
     build:
       context: .
@@ -33,7 +33,7 @@ services:
       - --port
       - "8802"
       - --model
-      - openai-community/gpt2
+      - Qwen/Qwen2.5-0.5B-Instruct
     environment:
       VLLM_CPU_KVCACHE_SPACE: 2
 
@@ -56,7 +56,6 @@ services:
       - rag-base-network
     ports:
       - "6333:6333"
-
 
 networks:
   rag-base-network:
