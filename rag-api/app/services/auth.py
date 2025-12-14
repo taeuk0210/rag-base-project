@@ -6,26 +6,23 @@ from app.cores.security import (
     create_access_token,
 )
 from app.schemas.auth import *
-from app.exceptions.users import *
-from app.repositories import users
+from app.exceptions.auth import *
+from app.repositories import user as user_repository
 
 
-def signup_user(db: Session, request: SignupRequest) -> None:
-    existing = users.get_user_by_email(db, request.user_email)
+def signup_user(db: Session, request: SignupRequest) -> SignupResponse:
+    existing = user_repository.get_user_by_email(db, request.email)
     if existing:
         raise DuplicatedEmailException()
 
     password_hash = get_password_hash(request.password)
-    users.create_user(db, request, password_hash)
-    return 
+    user_repository.create_user(db, request, password_hash)
+    return SignupResponse()
 
 
 def login_user(db: Session, request: LoginRequest) -> str:
-    user = users.get_user_by_email(db, request.user_email)
+    user = user_repository.get_user_by_email(db, request.email)
     if not user or not verify_password(request.password, user.password_hash):
-        raise InvalidPasswordException()
+        raise InvalidLoginException()
 
-    access_token = create_access_token(
-        subject=user
-    )
-    return access_token
+    return create_access_token(user)

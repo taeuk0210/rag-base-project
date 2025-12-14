@@ -5,6 +5,8 @@ from app.cores.database import get_db
 from app.schemas.auth import *
 from app.services import auth as user_service
 
+from app.cores.security import is_authed
+
 router = APIRouter()
 
 
@@ -17,9 +19,7 @@ def signup(
     request: SignupRequest,
     db: Session = Depends(get_db),
 ) -> SignupResponse:
-    user_service.signup_user(db, request)
-
-    return SignupResponse(ok=True)
+    return user_service.signup_user(db, request)
 
 
 @router.post(
@@ -38,7 +38,18 @@ def login(
         value=access_token,
         httponly=True,
         secure=False,
-        samesite="lax", # | "none" + secure=True
+        samesite="lax",  # | "none" + secure=True
         path="/",
     )
+    return LoginResponse(ok=True)
+
+
+@router.get(
+    "/me",
+    response_model=LoginResponse,
+    status_code=status.HTTP_200_OK,
+)
+def me(
+    user=Depends(is_authed),
+) -> LoginResponse:
     return LoginResponse(ok=True)
