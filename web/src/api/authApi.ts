@@ -1,4 +1,4 @@
-import type { LoginRequest } from "@/types/auth";
+import type { LoginRequest, SignupRequest } from "@/types/auth";
 import axios from "axios";
 
 const authApi = {
@@ -9,7 +9,18 @@ const authApi = {
   },
 
   login: async (request: LoginRequest) => {
-    return await axios.post("http://localhost:8800/api/v1/auth/login", request);
+    return await axios.post(
+      "http://localhost:8800/api/v1/auth/login",
+      request,
+      { withCredentials: true }
+    );
+  },
+
+  signup: async (request: SignupRequest) => {
+    return await axios.post(
+      "http://localhost:8800/api/v1/auth/signup",
+      request
+    );
   },
 };
 

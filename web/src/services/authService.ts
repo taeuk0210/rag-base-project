@@ -5,7 +5,10 @@ import { AxiosError } from "axios";
 const authService = {
   login: async (request: LoginRequest) => {
     const response = await authApi.login(request);
-    console.log(response);
+    return response;
+  },
+  signup: async (request: LoginRequest) => {
+    const response = await authApi.signup(request);
     return response;
   },
   isAuthed: async (

@@ -40,7 +40,7 @@ const ChatContainer: React.FC = () => {
     setText("");
     setLoading(true);
 
-    const reply = await chatService.sendMessage(trimemedText);
+    const reply = await chatService.sendMessage({message: trimemedText});
     setLoading(false);
     setMessages((prev) => [...prev, { roleType: "assistant", text: reply }]);
   };

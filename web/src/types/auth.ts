@@ -1,4 +1,9 @@
 export type LoginRequest = {
-  loginId: string;
+  email: string;
+  password: string;
+};
+
+export type SignupRequest = {
+  email: string;
   password: string;
 };

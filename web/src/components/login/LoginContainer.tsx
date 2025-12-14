@@ -4,6 +4,7 @@ import { styled } from "@mui/material/styles";
 
 import TextInput from "@/components/login/TextInput";
 import authService from "@/services/authService";
+import { useNavigate } from "react-router-dom";
 
 const StyledBox = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -28,30 +29,54 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 }));
 
 const LoginContainer: React.FC = () => {
-  const [loginId, setLoginId] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     // validation id and pw
 
-    const res = authService.login({
-      loginId: loginId,
+    const res = await authService.login({
+      email: email,
       password: password,
     });
 
     console.log(res);
-    setLoginId("");
+    setEmail("");
     setPassword("");
+
+    if (!res.data.ok) {
+      return;
+    }
+    navigate("/", { replace: true });
+  };
+
+  const handleSignup = async () => {
+    // validation id and pw
+
+    const res = await authService.signup({
+      email: email,
+      password: password,
+    });
+
+    console.log(res);
+    setEmail("");
+    setPassword("");
+
+    if (!res.data.ok) {
+      return;
+    }
+    navigate("/", { replace: true });
   };
 
   return (
     <StyledPaper>
       <StyledBox>
-        <TextInput label="아이디" value={loginId} setValue={setLoginId} />
+        <TextInput label="아이디" value={email} setValue={setEmail} />
         <TextInput label="비밀번호" value={password} setValue={setPassword} />
         <Box>
           <StyledButton onClick={handleLogin}>로그인</StyledButton>
-          <StyledButton>회원가입</StyledButton>
+          <StyledButton onClick={handleSignup}>회원가입</StyledButton>
         </Box>
       </StyledBox>
     </StyledPaper>
