@@ -5,7 +5,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
   height: "90vh",
   width: "50vh",
   justifySelf: "center",
-  backgroundColor: theme.palette.secondary.main,
+  backgroundColor: theme.palette.primary.main,
 }));
 
 const FileContainer: React.FC = () => {
