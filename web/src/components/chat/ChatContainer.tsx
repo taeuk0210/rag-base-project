@@ -16,6 +16,7 @@ const StyledBox = styled(Box)(() => ({
 
 const ChatContainer: React.FC = () => {
   const [text, setText] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
   const [messages, setMessages] = useState<ChatMessageType[]>([
     { roleType: "assistant", text: "안녕하세요 🙂 무엇을 도와드릴까요?" },
   ]);
@@ -31,20 +32,26 @@ const ChatContainer: React.FC = () => {
     });
   }, [messages]);
 
-  const handleSend = (text: string) => {
+  const handleSend = async (text: string) => {
     const trimemedText = text.trim();
     if (!trimemedText) return;
 
     setMessages((prev) => [...prev, { roleType: "user", text: trimemedText }]);
-    const reply = chatService.sendMessage(trimemedText);
-    if (reply) setText("");
+    setText("");
+    setLoading(true);
 
+    const reply = await chatService.sendMessage(trimemedText);
+    setLoading(false);
     setMessages((prev) => [...prev, { roleType: "assistant", text: reply }]);
   };
 
   return (
     <StyledBox>
-      <ChatMessageList data={messages} scrollRef={scrollRef} />
+      <ChatMessageList
+        data={messages}
+        scrollRef={scrollRef}
+        loading={loading}
+      />
       <SendMessage text={text} setText={setText} onSend={handleSend} />
     </StyledBox>
   );

@@ -1,15 +1,26 @@
-import type { ChatMessageType } from "@/types/chat";
 import Paper from "@mui/material/Paper";
-import { styled } from "@mui/material/styles";
+import { keyframes, styled } from "@mui/material/styles";
 
 type StyledPaperProps = {
   roleType: "assistant" | "user";
 };
 
+const animation = keyframes`
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    `;
+
 const StyledPaper = styled(Paper, {
   shouldForwardProp: (prop) => prop !== "roleType",
 })<StyledPaperProps>(({ theme, roleType }) => ({
   whiteSpace: "pre-wrap",
+  animation: `${animation} 0.25s ease-out`,
   padding: theme.spacing(2),
   margin: theme.spacing(2),
   backgroundColor:
@@ -26,10 +37,15 @@ const StyledPaper = styled(Paper, {
   ...theme.typography.body1,
 }));
 
-const ChatMessage: React.FC<ChatMessageType> = ({ text, roleType }) => {
+type ChatMessageProps = {
+  roleType: "assistant" | "user";
+  content: React.ReactNode;
+};
+
+const ChatMessage: React.FC<ChatMessageProps> = ({ content, roleType }) => {
   return (
     <StyledPaper elevation={4} roleType={roleType}>
-      {text}
+      {content}
     </StyledPaper>
   );
 };

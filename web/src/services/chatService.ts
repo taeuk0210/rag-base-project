@@ -1,7 +1,11 @@
+import chatApi from "@/api/chatApi";
+
 const chatService = {
-  sendMessage: (text: string) => {
-    console.log(text);
-    return "지금은 더미 응답이에요. 앞으로 API를 연결해야 합니다.";
+  sendMessage: async (text: string) => {
+    const response = await chatApi.sendMessage(text);
+    const reply = response.data.choices[0].message.content;
+
+    return reply;
   },
 };
 
