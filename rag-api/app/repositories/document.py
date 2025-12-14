@@ -2,8 +2,8 @@ from typing import Optional
 
 from sqlalchemy.orm import Session
 
-from app.models.docs import Document
-from app.schemas.docs import *
+from app.models.document import Document
+from app.schemas.document import *
 
 
 def get_document_by_id(db: Session, document_id: int) -> Optional[Document]:

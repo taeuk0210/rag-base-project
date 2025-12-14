@@ -3,8 +3,8 @@ from sqlalchemy.orm import Session
 
 from app.cores.database import get_db
 from app.cores.security import get_current_user_id
-from app.schemas.docs import *
-from app.services import docs as docs_service
+from app.schemas.document import *
+from app.services import document as docs_service
 
 router = APIRouter()
 
