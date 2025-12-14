@@ -1,16 +1,16 @@
 from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, Any
 
-from fastapi import Depends
-from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 from passlib.context import CryptContext
+from fastapi import Depends, Request, HTTPException
+from fastapi.security import OAuth2PasswordBearer
 
 from app.cores.config import settings
+from app.models.user import User
 from app.exceptions.common import *
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/users/login")
+pwd_context = CryptContext(schemes=["bcrypt_sha256"], deprecated="auto")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
@@ -21,8 +21,8 @@ def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
 
 
-def create_access_token(subject: Dict[str, Any]) -> str:
-    to_encode = subject.copy()
+def create_access_token(user: User) -> str:
+    to_encode = {"id": str(user.id)}
     expire = datetime.now(timezone.utc) + timedelta(
         minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
     )
@@ -32,34 +32,24 @@ def create_access_token(subject: Dict[str, Any]) -> str:
     )
 
 
-def create_refresh_token(subject: Dict[str, Any]) -> str:
-    to_encode = subject.copy()
-    expire = datetime.now(timezone.utc) + timedelta(
-        days=settings.REFRESH_TOKEN_EXPIRE_DAYS
+def get_current_user_id(request: Request) -> str:
+    token = request.cookies.get("access_token")
+    if not token:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+
+    payload = jwt.decode(
+        token, settings.SECURITY_SECRET_KEY, algorithms=[settings.SECURITY_ALGORITHM]
     )
-    to_encode.update({"exp": expire, "type": "refresh"})
-    return jwt.encode(
-        to_encode, settings.SECURITY_SECRET_KEY, algorithm=settings.SECURITY_ALGORITHM
-    )
+    return payload["id"]
 
 
-def decode_token(token: str) -> dict[str, Any]:
+def is_authed(request: Request) -> dict:
+    token = request.cookies.get("access_token")
+    if not token:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+
     return jwt.decode(
         token,
         settings.SECURITY_SECRET_KEY,
         algorithms=[settings.SECURITY_ALGORITHM],
     )
-
-
-def get_current_user_id(token: str = Depends(oauth2_scheme)) -> int:
-    try:
-        payload = decode_token(token)
-        user_id = payload.get("sub")
-
-        if user_id is None:
-            raise NotFoundException
-
-        return user_id
-
-    except JWTError as e:
-        raise e
