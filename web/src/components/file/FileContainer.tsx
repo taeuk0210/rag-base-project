@@ -1,9 +1,9 @@
-import { styled } from "@mui/material/styles";
-import { Box, Typography } from "@mui/material";
-import FileDropZone from "./FileDropZone";
 import { useState } from "react";
-import FileList from "./FileList";
-import FileViewer from "./FileViewer";
+import { styled } from "@mui/material/styles";
+import { Box } from "@mui/material";
+import FileList from "@/components/file/FileList";
+import PDFViewer from "@/components/file/PDFViewer";
+import FileDropZone from "@/components/file/FileDropZone";
 
 const StyledBox = styled(Box)(() => ({
   height: "90vh",
@@ -13,6 +13,7 @@ const StyledBox = styled(Box)(() => ({
 
 const FileContainer: React.FC = () => {
   const [files, setFiles] = useState<File[]>([]);
+  const [file, setFile] = useState<File | null>(null);
 
   const handleDrop = (acceptedFiles: File[]) => {
     setFiles((prev) => [...prev, ...acceptedFiles]);
@@ -20,9 +21,9 @@ const FileContainer: React.FC = () => {
 
   return (
     <StyledBox>
-      <FileViewer file={files[0]} />
       <FileDropZone onDrop={handleDrop} />
-      <FileList files={files} />
+      <PDFViewer file={file} />
+      <FileList files={files} setFile={setFile} />
     </StyledBox>
   );
 };

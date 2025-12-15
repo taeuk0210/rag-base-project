@@ -1,8 +1,8 @@
 import React from "react";
 import { useDropzone } from "react-dropzone";
-import { Typography, Paper, Button } from "@mui/material";
-import { CloudUpload } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
+import { Typography, Paper } from "@mui/material";
+import { CloudUpload } from "@mui/icons-material";
 
 type StyledPaperProps = {
   isDragActive: boolean;

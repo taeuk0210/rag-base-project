@@ -15,23 +15,22 @@ const StyledPaper = styled(Paper)(() => ({
 
 type FileListProps = {
   files: File[];
+  setFile: (f: File) => void;
 };
 
-const FileList: React.FC<FileListProps> = ({ files }) => {
+const FileList: React.FC<FileListProps> = ({ files, setFile }) => {
   return (
     <StyledPaper>
       <List sx={{ width: "100%", bgcolor: "background.paper" }}>
         {files.map((f, i) => (
           <ListItem key={i}>
-            {/* <ListItemIcon> */}
             <Checkbox
               edge="start"
               tabIndex={-1}
               disableRipple
               onClick={() => {}}
             />
-            {/* </ListItemIcon> */}
-            <ListItemButton role={undefined} onClick={() => {}} dense>
+            <ListItemButton role={undefined} onClick={() => setFile(f)} dense>
               <ListItemText id={`${i}`} primary={f.name} />
             </ListItemButton>
           </ListItem>
