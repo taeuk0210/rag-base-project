@@ -2,15 +2,15 @@ import os
 from app.cores.config import settings
 
 
-def save(path: str, data: bytes) -> str:
-    full_path = os.path.join(settings.FILE_STORAGE_BASE_DIR, path)
+def save(title: str, data: bytes) -> str:
+    file_url = os.path.join(settings.FILE_STORAGE_BASE_DIR, title)
 
-    os.makedirs(os.path.dirname(full_path), exist_ok=True)
+    os.makedirs(os.path.dirname(file_url), exist_ok=True)
 
-    with open(full_path, "wb") as f:
+    with open(file_url, "wb") as f:
         f.write(data)
 
-    return path
+    return file_url
 
 
 def load(key: str) -> bytes:
