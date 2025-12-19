@@ -6,7 +6,7 @@ from fastapi import Depends, Request, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 
 from app.cores.config import settings
-from app.models.user import User
+from app.models.user_info import UserInfo
 from app.exceptions.common import *
 
 pwd_context = CryptContext(schemes=["bcrypt_sha256"], deprecated="auto")
@@ -21,7 +21,7 @@ def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
 
 
-def create_access_token(user: User) -> str:
+def create_access_token(user: UserInfo) -> str:
     to_encode = {"id": str(user.id)}
     expire = datetime.now(timezone.utc) + timedelta(
         minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES

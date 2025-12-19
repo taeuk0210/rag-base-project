@@ -8,7 +8,7 @@ class Base(DeclarativeBase):
     pass
 
 
-class User(Base):
+class UserInfo(Base):
     __tablename__ = "user_info"
 
     id: Mapped[int] = mapped_column(
@@ -46,6 +46,3 @@ class User(Base):
         server_default=func.now(),
         nullable=False,
     )
-
-    def __repr__(self) -> str:
-        return f"User(id={self.id}, email={self.email!r})"
