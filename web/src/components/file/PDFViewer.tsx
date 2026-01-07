@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
-import { Box, IconButton, Paper } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { Box, IconButton } from "@mui/material";
 import {
   ArrowBackIosNewOutlined,
   ArrowForwardIosOutlined,
 } from "@mui/icons-material";
+import BasePaper from "@/components/common/BasePaper";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
@@ -15,14 +15,6 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 type PDFViewerProps = {
   file: File | null;
 };
-
-const StyledPaper = styled(Paper)(() => ({
-  display: "flex",
-  flexDirection: "column",
-  width: "75vh",
-  height: "100vh",
-  alignItems: "center",
-}));
 
 const PDFViewer: React.FC<PDFViewerProps> = ({ file }) => {
   const [numPages, setNumPages] = useState<number>(0);
@@ -37,7 +29,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ file }) => {
     setPageNumber(Math.max(1, pageNumber - 1));
   };
   return (
-    <StyledPaper>
+    <BasePaper>
       <Box>
         <IconButton onClick={handlePagePrev}>
           <ArrowBackIosNewOutlined />
@@ -48,15 +40,16 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ file }) => {
       </Box>
       {file && (
         <Document file={file} onLoadSuccess={handleLoadSuccess}>
-          <Page
-            pageNumber={pageNumber}
-            width={500}
-            renderTextLayer={false}
-            renderAnnotationLayer={false}
-          />
+          <BasePaper>
+            <Page
+              pageNumber={pageNumber}
+              renderTextLayer={false}
+              renderAnnotationLayer={false}
+            />
+          </BasePaper>
         </Document>
       )}
-    </StyledPaper>
+    </BasePaper>
   );
 };
 

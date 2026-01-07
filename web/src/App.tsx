@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import MainPage from "@/pages/MainPage";
 import LoginPage from "@/pages/LoginPage";
-import ProtectedRoute from "@/routes/ProtectedRoute";
+// import ProtectedRoute from "@/routes/ProtectedRoute";
 
 const App: React.FC = () => {
   return (
@@ -10,9 +10,10 @@ const App: React.FC = () => {
       <Route
         path="/"
         element={
-          <ProtectedRoute>
-            <MainPage />
-          </ProtectedRoute>
+          // <ProtectedRoute>
+          //   <MainPage />
+          // </ProtectedRoute>
+          <MainPage />
         }
       />
     </Routes>

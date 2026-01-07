@@ -1,8 +1,7 @@
-import { Box } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import type { ChatContent } from "@/types/chat";
 import ChatMessage from "@/components/chat/ChatMessage";
 import ChatLoading from "@/components/chat/ChatLoading";
+import BaseBox from "@/components/common/BaseBox";
 
 type ChatMessageListProps = {
   data: ChatContent[];
@@ -10,25 +9,18 @@ type ChatMessageListProps = {
   loading: boolean;
 };
 
-const StyledBox = styled(Box)(({ theme }) => ({
-  height: "80%",
-  padding: theme.spacing(1),
-  overflowY: "auto",
-  scrollbarGutter: "stable",
-}));
-
 const ChatMessageList: React.FC<ChatMessageListProps> = ({
   data,
   scrollRef,
   loading,
 }) => {
   return (
-    <StyledBox ref={scrollRef}>
+    <BaseBox ref={scrollRef}>
       {data.map((c, i) => (
         <ChatMessage key={i} content={c.message} roleType={c.roleType} />
       ))}
       {loading && <ChatLoading />}
-    </StyledBox>
+    </BaseBox>
   );
 };
 

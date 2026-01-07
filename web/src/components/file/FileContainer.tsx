@@ -1,28 +1,12 @@
 import { useEffect, useState } from "react";
-import { styled } from "@mui/material/styles";
-import { Alert, Box, Snackbar, type AlertColor } from "@mui/material";
+import { Alert, Snackbar, type AlertColor } from "@mui/material";
 import PDFViewer from "@/components/file/PDFViewer";
 import FileDropZone from "@/components/file/FileDropZone";
 import FileUploadList from "@/components/file/FileUploadList";
 import docService from "@/services/docService";
 import FileDownlaodList from "./FileDownloadList";
 import { type DocResponse } from "@/types/doc";
-
-const StyledBox = styled(Box)(({ theme }) => ({
-  display: "flex",
-  flexDirection: "row",
-  width: "125vh",
-  justifySelf: "center",
-  gap: theme.spacing(1),
-}));
-
-const StyledBox2 = styled(Box)(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  width: "125vh",
-  justifySelf: "center",
-  gap: theme.spacing(2),
-}));
+import BaseBox from "@/components/common/BaseBox";
 
 const FileContainer: React.FC = () => {
   const [fetchs, setFetchs] = useState<DocResponse[]>([]);
@@ -68,9 +52,9 @@ const FileContainer: React.FC = () => {
   };
 
   return (
-    <StyledBox>
+    <BaseBox direction="row">
       <PDFViewer file={file} />
-      <StyledBox2>
+      <BaseBox direction="column">
         <FileDropZone onDrop={handleDrop} />
         <FileUploadList
           files={files}
@@ -82,7 +66,7 @@ const FileContainer: React.FC = () => {
           setFile={setFile}
           onDownload={() => {}}
         />
-      </StyledBox2>
+      </BaseBox>
       <Snackbar
         open={alert.open}
         onClose={() => setAlert((prev) => ({ ...prev, open: false }))}
@@ -90,7 +74,7 @@ const FileContainer: React.FC = () => {
       >
         <Alert severity={alert.color}>{alert.message}</Alert>
       </Snackbar>
-    </StyledBox>
+    </BaseBox>
   );
 };
 

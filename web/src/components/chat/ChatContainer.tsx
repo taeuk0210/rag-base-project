@@ -1,17 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { styled } from "@mui/material/styles";
-import { Paper } from "@mui/material";
 import type { ChatContent } from "@/types/chat";
 import ChatMessageList from "@/components/chat/ChatMessageList";
 import SendMessage from "@/components/chat/SendMessage";
 import chatService from "@/services/chatService";
-
-const StyledPaper = styled(Paper)(({ theme }) => ({
-  paddingX: theme.spacing(1),
-  height: "100vh",
-  width: "60vh",
-  justifySelf: "center",
-}));
+import BaseBox from "@/components/common/BaseBox";
+import BaseContainer from "@/components/common/BaseContainer";
 
 const ChatContainer: React.FC = () => {
   const [message, setMessage] = useState<string>("");
@@ -45,18 +38,20 @@ const ChatContainer: React.FC = () => {
   };
 
   return (
-    <StyledPaper>
-      <ChatMessageList
-        data={messages}
-        scrollRef={scrollRef}
-        loading={loading}
-      />
-      <SendMessage
-        message={message}
-        setMessage={setMessage}
-        onSend={handleSend}
-      />
-    </StyledPaper>
+    <BaseContainer>
+      <BaseBox>
+        <ChatMessageList
+          data={messages}
+          scrollRef={scrollRef}
+          loading={loading}
+        />
+        <SendMessage
+          message={message}
+          setMessage={setMessage}
+          onSend={handleSend}
+        />
+      </BaseBox>
+    </BaseContainer>
   );
 };
 

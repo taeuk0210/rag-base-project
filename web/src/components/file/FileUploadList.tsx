@@ -2,17 +2,9 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import Checkbox from "@mui/material/Checkbox";
-import { Button, Chip, Paper } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { Button, Chip } from "@mui/material";
 import { handleFileSize } from "@/utils/handlers";
-
-const StyledPaper = styled(Paper)(() => ({
-  height: "25vh",
-  width: "50vh",
-  overflowY: "auto",
-  scrollbarGutter: "stable",
-}));
+import BasePaper from "@/components/common/BasePaper";
 
 type FileUploadListProps = {
   files: File[];
@@ -26,7 +18,7 @@ const FileUploadList: React.FC<FileUploadListProps> = ({
   onUpload,
 }) => {
   return (
-    <StyledPaper>
+    <BasePaper>
       <List>
         {files.map((f, i) => (
           <ListItem key={i}>
@@ -40,7 +32,7 @@ const FileUploadList: React.FC<FileUploadListProps> = ({
           </ListItem>
         ))}
       </List>
-    </StyledPaper>
+    </BasePaper>
   );
 };
 

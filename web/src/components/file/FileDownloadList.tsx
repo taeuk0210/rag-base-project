@@ -2,18 +2,11 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import { Button, Chip, Paper } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { Button, Chip } from "@mui/material";
 import { handleFileSize } from "@/utils/handlers";
 import type { DocResponse } from "@/types/doc";
 import docService from "@/services/docService";
-
-const StyledPaper = styled(Paper)(() => ({
-  height: "25vh",
-  width: "50vh",
-  overflowY: "auto",
-  scrollbarGutter: "stable",
-}));
+import BasePaper from "@/components/common/BasePaper";
 
 type FileDownlaodListProps = {
   files: DocResponse[];
@@ -30,7 +23,7 @@ const FileDownlaodList: React.FC<FileDownlaodListProps> = ({
     setFile(await docService.getDocumentFile(documentId));
   };
   return (
-    <StyledPaper>
+    <BasePaper>
       <List>
         {files.map((f, i) => (
           <ListItem key={i}>
@@ -48,7 +41,7 @@ const FileDownlaodList: React.FC<FileDownlaodListProps> = ({
           </ListItem>
         ))}
       </List>
-    </StyledPaper>
+    </BasePaper>
   );
 };
 
